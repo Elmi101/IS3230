@@ -1,0 +1,533 @@
+﻿@{
+    ViewData["Title"] = "Home";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Club BAIST — Private Golf Club</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A84C;
+            --gold-light: #E8D5A3;
+            --dark: #0D0D0D;
+            --dark-2: #1A1A1A;
+            --dark-3: #2A2A2A;
+            --light: #F5F2EC;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        /* ---- HERO ---- */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: var(--dark);
+        }
+
+            /* Subtle grid texture */
+            .hero::before {
+                content: '';
+                position: absolute;
+                inset: 0;
+                background-image: linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+                background-size: 60px 60px;
+                pointer-events: none;
+            }
+
+            /* Gold accent line top */
+            .hero::after {
+                content: '';
+                position: absolute;
+                top: 0;
+                left: 0;
+                right: 0;
+                height: 2px;
+                background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            }
+
+        /* ---- TOP NAV ---- */
+        .home-nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 2rem 4rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .home-nav-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: var(--gold);
+            text-decoration: none;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        .home-nav-links {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+            list-style: none;
+        }
+
+            .home-nav-links a {
+                color: #888;
+                text-decoration: none;
+                font-size: 0.75rem;
+                letter-spacing: 2px;
+                text-transform: uppercase;
+                transition: color 0.2s;
+            }
+
+                .home-nav-links a:hover {
+                    color: var(--light);
+                }
+
+            .home-nav-links .login-link {
+                border: 1px solid rgba(201,168,76,0.4);
+                color: var(--gold);
+                padding: 8px 24px;
+                transition: all 0.2s;
+            }
+
+                .home-nav-links .login-link:hover {
+                    background-color: var(--gold);
+                    color: var(--dark);
+                    border-color: var(--gold);
+                }
+
+        /* ---- HERO CONTENT ---- */
+        .hero-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 4rem 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-eyebrow {
+            font-size: 0.7rem;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.2s forwards;
+        }
+
+        .hero-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(3.5rem, 8vw, 7rem);
+            font-weight: 300;
+            line-height: 1;
+            letter-spacing: -1px;
+            color: var(--light);
+            margin-bottom: 0.2rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+            .hero-title em {
+                font-style: italic;
+                color: var(--gold);
+            }
+
+        .hero-subtitle {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            font-weight: 300;
+            color: #666;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.6s forwards;
+        }
+
+        .hero-divider {
+            width: 60px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            margin: 0 auto 3rem;
+            opacity: 0;
+            animation: fadeIn 0.8s ease 0.7s forwards;
+        }
+
+        .hero-desc {
+            font-size: 0.9rem;
+            color: #666;
+            letter-spacing: 1px;
+            max-width: 400px;
+            line-height: 1.8;
+            margin-bottom: 3rem;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.8s forwards;
+        }
+
+        /* ---- CTA BUTTONS ---- */
+        .cta-group {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+            justify-content: center;
+            opacity: 0;
+            animation: fadeUp 0.8s ease 1s forwards;
+        }
+
+        .btn-primary-gold {
+            background-color: var(--gold);
+            color: var(--dark);
+            border: none;
+            padding: 14px 40px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.25s;
+            display: inline-block;
+        }
+
+            .btn-primary-gold:hover {
+                background-color: var(--gold-light);
+                color: var(--dark);
+                transform: translateY(-2px);
+                box-shadow: 0 8px 24px rgba(201,168,76,0.25);
+            }
+
+        .btn-secondary-outline {
+            background-color: transparent;
+            color: var(--light);
+            border: 1px solid rgba(255,255,255,0.2);
+            padding: 14px 40px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 400;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-decoration: none;
+            transition: all 0.25s;
+            display: inline-block;
+        }
+
+            .btn-secondary-outline:hover {
+                border-color: var(--light);
+                color: var(--light);
+                transform: translateY(-2px);
+            }
+
+        /* ---- MEMBER WELCOME (logged in) ---- */
+        .member-welcome {
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.4s forwards;
+        }
+
+        .member-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 5vw, 4.5rem);
+            font-weight: 300;
+            color: var(--light);
+            margin-bottom: 0.5rem;
+        }
+
+            .member-name span {
+                color: var(--gold);
+                font-style: italic;
+            }
+
+        .member-role-badge {
+            display: inline-block;
+            border: 1px solid var(--gold);
+            color: var(--gold);
+            font-size: 0.65rem;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            padding: 4px 16px;
+            margin-bottom: 3rem;
+        }
+
+        /* ---- QUICK ACCESS CARDS (logged in) ---- */
+        .quick-access {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1px;
+            max-width: 900px;
+            width: 100%;
+            margin: 0 auto;
+            background-color: var(--dark-3);
+            border: 1px solid var(--dark-3);
+            opacity: 0;
+            animation: fadeUp 0.8s ease 0.8s forwards;
+        }
+
+        .quick-card {
+            background-color: var(--dark-2);
+            padding: 2rem 1.5rem;
+            text-decoration: none;
+            text-align: center;
+            transition: all 0.2s;
+            display: block;
+        }
+
+            .quick-card:hover {
+                background-color: var(--dark-3);
+            }
+
+                .quick-card:hover .quick-card-arrow {
+                    opacity: 1;
+                    transform: translateX(4px);
+                }
+
+        .quick-card-icon {
+            font-size: 1.8rem;
+            margin-bottom: 0.8rem;
+            display: block;
+        }
+
+        .quick-card-title {
+            font-size: 0.7rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #888;
+            transition: color 0.2s;
+        }
+
+        .quick-card:hover .quick-card-title {
+            color: var(--light);
+        }
+
+        .quick-card-arrow {
+            color: var(--gold);
+            font-size: 0.7rem;
+            margin-top: 0.5rem;
+            opacity: 0;
+            transition: all 0.2s;
+            display: block;
+        }
+
+        .quick-card-admin .quick-card-title {
+            color: rgba(201,168,76,0.6);
+        }
+
+        .quick-card-admin:hover .quick-card-title {
+            color: var(--gold);
+        }
+
+        /* ---- BOTTOM STRIP ---- */
+        .hero-bottom {
+            padding: 2rem 4rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid var(--dark-3);
+            position: relative;
+            z-index: 10;
+        }
+
+        .hero-bottom-text {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #444;
+        }
+
+            .hero-bottom-text span {
+                color: var(--gold);
+            }
+
+        /* ---- ANIMATIONS ---- */
+        @@keyframes fadeUp {
+            from
+
+        {
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        }
+
+        @@keyframes fadeIn {
+            from
+
+        {
+            opacity: 0;
+        }
+
+        to {
+            opacity: 1;
+        }
+
+        }
+
+        @@media (max-width: 768px) {
+            .home-nav {
+                padding: 1.5rem 2rem;
+            }
+
+            .home-nav-links {
+                gap: 1rem;
+            }
+
+            .hero-bottom {
+                padding: 1.5rem 2rem;
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+
+            .quick-access {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hero">
+
+        <!-- Top Navigation -->
+        <nav class="home-nav">
+            <a href="/Home/Index" class="home-nav-brand">Club BAIST</a>
+            <ul class="home-nav-links">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <li><a href="/TeeSheet/ViewSheet?date=@DateTime.Today.ToString("yyyy-MM-dd")">Tee Sheet</a></li>
+                    <li><a href="/Score/Enter">Scores</a></li>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Clerk"))
+                    {
+                        <li><a href="/Application/Review">Admin</a></li>
+                    }
+                    <li><a href="/Account/Logout" class="login-link">Logout</a></li>
+                }
+                else
+                {
+                    <li><a href="/Application/Apply">Apply</a></li>
+                    <li><a href="/Application/Status">Status</a></li>
+                    <li><a href="/Account/Login" class="login-link">Member Login</a></li>
+                }
+            </ul>
+        </nav>
+
+        <!-- Hero Content -->
+        <div class="hero-content">
+
+            @if (User.Identity?.IsAuthenticated == true)
+            {
+                <!-- LOGGED IN VIEW -->
+                <div class="member-welcome">
+                    <p class="hero-eyebrow">Member Portal</p>
+                    <h1 class="member-name">
+                        Welcome, <span>@User.Identity.Name.Split(' ')[0]</span>
+                    </h1>
+                    <div class="member-role-badge">
+                        @User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value Member
+                    </div>
+                </div>
+
+                <!-- Quick Access Grid -->
+                <div class="quick-access">
+                    <a href="/TeeSheet/ViewSheet?date=@DateTime.Today.ToString("yyyy-MM-dd")"
+                       class="quick-card">
+                        <span class="quick-card-icon">📅</span>
+                        <span class="quick-card-title">Tee Sheet</span>
+                        <span class="quick-card-arrow">→</span>
+                    </a>
+                    <a href="/Score/Enter" class="quick-card">
+                        <span class="quick-card-icon">🏌️</span>
+                        <span class="quick-card-title">Enter Score</span>
+                        <span class="quick-card-arrow">→</span>
+                    </a>
+                    <a href="/Handicap/Index" class="quick-card">
+                        <span class="quick-card-icon">📊</span>
+                        <span class="quick-card-title">Handicap Index</span>
+                        <span class="quick-card-arrow">→</span>
+                    </a>
+                    <a href="/StandingRequest/Create" class="quick-card">
+                        <span class="quick-card-icon">📌</span>
+                        <span class="quick-card-title">Standing Request</span>
+                        <span class="quick-card-arrow">→</span>
+                    </a>
+                    @if (User.IsInRole("Admin") || User.IsInRole("Clerk"))
+                    {
+                        <a href="/Application/Review" class="quick-card quick-card-admin">
+                            <span class="quick-card-icon">📋</span>
+                            <span class="quick-card-title">Applications</span>
+                            <span class="quick-card-arrow">→</span>
+                        </a>
+                        <a href="/Clerk/CreateTeeSheet" class="quick-card quick-card-admin">
+                            <span class="quick-card-icon">⚙️</span>
+                            <span class="quick-card-title">Create Tee Sheet</span>
+                            <span class="quick-card-arrow">→</span>
+                        </a>
+                    }
+                </div>
+            }
+            else
+            {
+                <!-- NOT LOGGED IN VIEW -->
+                <p class="hero-eyebrow">Est. 1996 — Alberta, Canada</p>
+                <h1 class="hero-title">Club<br><em>BAIST</em></h1>
+                <p class="hero-subtitle">Private Golf Club</p>
+                <div class="hero-divider"></div>
+                <p class="hero-desc">
+                    An award-winning 18-hole championship course
+                    enjoyed by golfers at every level of play.
+                </p>
+                <div class="cta-group">
+                    <a href="/Account/Login" class="btn-primary-gold">Member Login</a>
+                    <a href="/Application/Apply" class="btn-secondary-outline">Apply for Membership</a>
+                </div>
+            }
+
+        </div>
+
+        <!-- Bottom Strip -->
+        <div class="hero-bottom">
+            <span class="hero-bottom-text">
+                <span>18</span> Holes — Championship Course
+            </span>
+            <span class="hero-bottom-text">
+                Golf Season <span>April — September</span>
+            </span>
+            <span class="hero-bottom-text">
+                <span>Gold</span> · Silver · Bronze · Copper
+            </span>
+        </div>
+
+    </div>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

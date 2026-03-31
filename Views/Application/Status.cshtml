@@ -1,0 +1,83 @@
+﻿@model ClubBAIST.Models.ViewModels.ApplicationStatusViewModel
+
+@{
+    ViewData["Title"] = "Application Status";
+}
+
+<div class="page-header">
+    <h2>Application Status</h2>
+    <p class="page-subtitle">Check the status of your membership application</p>
+</div>
+
+<div class="panel" style="max-width:460px">
+    <div class="panel-title">Look Up Application</div>
+
+    @if (Model.ErrorMessage != null)
+    {
+        <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
+    }
+
+    <form method="post" action="/Application/Status">
+        @Html.AntiForgeryToken()
+        <div class="mb-3">
+            <label class="form-label">Last Name</label>
+            <input type="text" name="LastName" class="form-control"
+                   value="@Model.LastName" placeholder="As on application" />
+        </div>
+        <div class="mb-4">
+            <label class="form-label">Phone Number</label>
+            <input type="text" name="Phone" class="form-control"
+                   value="@Model.Phone" placeholder="As on application" />
+        </div>
+        <button type="submit" class="btn-action btn-action-dark" style="padding:10px 28px">
+            Check Status
+        </button>
+    </form>
+</div>
+
+@if (Model.ApplicantName != null)
+{
+    <div class="panel" style="max-width:560px;margin-top:1.5rem">
+        <div class="panel-title">@Model.ApplicantName</div>
+
+        <table class="baist-table" style="margin-bottom:0">
+            <tr>
+                <td style="color:#999;width:160px">Desired Membership</td>
+                <td>@Model.DesiredType</td>
+            </tr>
+            <tr>
+                <td style="color:#999">Submitted</td>
+                <td>@Model.SubmittedDate?.ToString("MMMM dd, yyyy")</td>
+            </tr>
+            <tr>
+                <td style="color:#999">Status</td>
+                <td>
+                    @{
+                        var pillClass = Model.Status switch
+                        {
+                            "Accepted" => "status-active",
+                            "Denied" => "status-cancelled",
+                            "OnHold" => "status-booked",
+                            _ => "status-blocked"
+                        };
+                    }
+                    <span class="status-pill @pillClass">@Model.Status</span>
+                </td>
+            </tr>
+            @if (Model.ReviewDate != null)
+            {
+                <tr>
+                    <td style="color:#999">Reviewed</td>
+                    <td>@Model.ReviewDate?.ToString("MMMM dd, yyyy")</td>
+                </tr>
+            }
+            @if (!string.IsNullOrEmpty(Model.Notes))
+            {
+                <tr>
+                    <td style="color:#999">Notes</td>
+                    <td>@Model.Notes</td>
+                </tr>
+            }
+        </table>
+    </div>
+}

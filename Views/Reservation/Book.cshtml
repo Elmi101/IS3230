@@ -1,0 +1,89 @@
+﻿@model ClubBAIST.Models.ViewModels.BookReservationViewModel
+
+@{
+    ViewData["Title"] = "Book Tee Time";
+    var dateStr = Model.SheetDate.ToString("yyyy-MM-dd");
+}
+
+<div class="page-header">
+    <h2>Book Tee Time</h2>
+    <p class="page-subtitle">@Model.SheetDate.ToString("dddd, MMMM dd, yyyy") — @Model.SlotTime</p>
+</div>
+
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
+}
+
+<form method="post" action="/Reservation/Book">
+    @Html.AntiForgeryToken()
+    <input type="hidden" name="SlotId" value="@Model.SlotId" />
+    <input type="hidden" name="SlotTime" value="@Model.SlotTime" />
+    <input type="hidden" name="SheetDate" value="@Model.SheetDate.ToString("yyyy-MM-dd")" />
+
+    <div class="panel">
+        <div class="panel-title">Booking Details</div>
+        <div class="row">
+            <div class="col-md-4 mb-3">
+                <label class="form-label">Member Number</label>
+                <input type="text" name="BookedByMemberNumber"
+                       class="form-control" placeholder="e.g. M001"
+                       value="@Model.BookedByMemberNumber" />
+            </div>
+            <div class="col-md-2 mb-3">
+                <label class="form-label">Players</label>
+                <select name="NumberOfPlayers" class="form-select">
+                    <option value="1">1</option>
+                    <option value="2" selected>2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                </select>
+            </div>
+            <div class="col-md-2 mb-3">
+                <label class="form-label">Carts</label>
+                <select name="NumberOfCarts" class="form-select">
+                    <option value="0">0</option>
+                    <option value="1" selected>1</option>
+                    <option value="2">2</option>
+                </select>
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">Additional Players <span style="color:#bbb;font-size:0.75rem;text-transform:none;letter-spacing:0">(optional)</span></div>
+        <p style="font-size:0.8rem;color:#999;margin-bottom:1.5rem">
+            Enter member number or guest name for each additional player.
+        </p>
+
+        @for (int i = 2; i <= 4; i++)
+        {
+            <div class="row mb-3 align-items-center">
+                <div class="col-md-1">
+                    <span style="font-family:'Cormorant Garamond',serif;font-size:1.1rem;color:#999">
+                        P@(i)
+                    </span>
+                </div>
+                <div class="col-md-3">
+                    <input type="text" name="Player@(i)MemberNumber"
+                           class="form-control" placeholder="Member Number" />
+                </div>
+                <div class="col-md-1 text-center" style="color:#ccc;font-size:0.75rem">or</div>
+                <div class="col-md-3">
+                    <input type="text" name="Player@(i)GuestName"
+                           class="form-control" placeholder="Guest Name" />
+                </div>
+            </div>
+        }
+    </div>
+
+    <div style="display:flex;gap:0.75rem">
+        <button type="submit" class="btn-action btn-action-gold" style="padding:10px 32px">
+            Confirm Booking
+        </button>
+        <a href="/TeeSheet/ViewSheet?date=@dateStr" class="btn-action btn-action-outline"
+           style="padding:10px 32px">
+            Cancel
+        </a>
+    </div>
+</form>

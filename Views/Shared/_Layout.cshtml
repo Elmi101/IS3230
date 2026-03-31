@@ -1,0 +1,740 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] — Club BAIST</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;600&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #C9A84C;
+            --gold-light: #E8D5A3;
+            --dark: #0D0D0D;
+            --dark-2: #1A1A1A;
+            --dark-3: #2A2A2A;
+            --mid: #555;
+            --light: #F5F2EC;
+            --white: #FEFEFE;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            background-color: var(--light);
+            color: var(--dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* ---- NAVBAR ---- */
+        .site-nav {
+            background-color: var(--dark);
+            border-bottom: 1px solid var(--dark-3);
+            padding: 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+            .site-nav .container {
+                display: flex;
+                align-items: stretch;
+                height: 58px;
+            }
+
+        .nav-brand {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: var(--gold) !important;
+            text-decoration: none;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            padding-right: 2rem;
+            border-right: 1px solid var(--dark-3);
+            margin-right: 1rem;
+            white-space: nowrap;
+        }
+
+            .nav-brand:hover {
+                color: var(--gold-light) !important;
+            }
+
+        .navbar-nav .nav-link {
+            color: #aaa !important;
+            font-size: 0.8rem;
+            font-weight: 400;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            padding: 0 1rem !important;
+            height: 58px;
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid transparent;
+            transition: all 0.2s;
+        }
+
+            .navbar-nav .nav-link:hover {
+                color: var(--white) !important;
+                border-bottom-color: var(--gold);
+            }
+
+        .navbar-nav .dropdown-toggle::after {
+            margin-left: 6px;
+        }
+
+        .dropdown-menu {
+            background-color: var(--dark-2);
+            border: 1px solid var(--dark-3);
+            border-radius: 0;
+            padding: 0.5rem 0;
+            min-width: 220px;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+        }
+
+        .dropdown-item {
+            color: #bbb;
+            font-size: 0.8rem;
+            letter-spacing: 0.5px;
+            padding: 0.6rem 1.2rem;
+            transition: all 0.15s;
+        }
+
+            .dropdown-item:hover {
+                background-color: var(--dark-3);
+                color: var(--white);
+            }
+
+        .dropdown-divider {
+            border-color: var(--dark-3);
+            margin: 0.3rem 0;
+        }
+
+        .nav-section-label {
+            font-size: 0.65rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: var(--gold);
+            padding: 0.5rem 1.2rem 0.2rem;
+            display: block;
+        }
+
+        .admin-link {
+            color: var(--gold) !important;
+        }
+
+            .admin-link:hover {
+                color: var(--gold-light) !important;
+            }
+
+        .user-badge {
+            background-color: var(--dark-3);
+            color: var(--gold);
+            font-size: 0.65rem;
+            padding: 2px 8px;
+            border-radius: 2px;
+            margin-left: 6px;
+            letter-spacing: 1px;
+        }
+
+        .nav-login-btn {
+            border: 1px solid var(--gold) !important;
+            color: var(--gold) !important;
+            padding: 6px 20px !important;
+            height: auto !important;
+            border-bottom: 1px solid var(--gold) !important;
+            border-radius: 2px;
+            margin: auto 0;
+        }
+
+            .nav-login-btn:hover {
+                background-color: var(--gold) !important;
+                color: var(--dark) !important;
+                border-bottom-color: var(--gold) !important;
+            }
+
+        /* ---- MAIN CONTENT ---- */
+        .main-content {
+            flex: 1;
+            padding-top: 2rem;
+            padding-bottom: 3rem;
+        }
+
+        /* ---- ALERTS ---- */
+        .alert-success {
+            background-color: #f0f7f0;
+            border: 1px solid #c3e6c3;
+            color: #2d6a2d;
+            border-radius: 2px;
+        }
+
+        .alert-danger {
+            background-color: #fdf0f0;
+            border: 1px solid #f0c3c3;
+            color: #8b2020;
+            border-radius: 2px;
+        }
+
+        /* ---- CARDS ---- */
+        .card {
+            border: 1px solid #e0ddd6;
+            border-radius: 2px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
+        }
+
+        .card-header {
+            border-radius: 0 !important;
+            font-family: 'Jost', sans-serif;
+            letter-spacing: 1px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+        }
+
+        /* ---- BUTTONS ---- */
+        .btn {
+            border-radius: 2px;
+            font-size: 0.8rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            font-weight: 400;
+        }
+
+        .btn-dark {
+            background-color: var(--dark);
+            border-color: var(--dark);
+        }
+
+            .btn-dark:hover {
+                background-color: var(--dark-3);
+                border-color: var(--gold);
+            }
+
+        .btn-gold {
+            background-color: var(--gold);
+            color: var(--dark);
+            border: none;
+        }
+
+            .btn-gold:hover {
+                background-color: var(--gold-light);
+                color: var(--dark);
+            }
+
+        /* ---- TABLES ---- */
+        .table {
+            font-size: 0.88rem;
+        }
+
+        .table-dark {
+            background-color: var(--dark);
+        }
+
+        .table thead th {
+            font-weight: 500;
+            letter-spacing: 1px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        /* ---- FOOTER ---- */
+        .site-footer {
+            background-color: var(--dark);
+            color: #555;
+            padding: 20px 0;
+            font-size: 0.75rem;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            text-align: center;
+            border-top: 1px solid var(--dark-3);
+        }
+
+            .site-footer span {
+                color: var(--gold);
+            }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="site-nav">
+        <div class="container">
+            <a class="nav-brand" href="/Home/Index">⛳ Club BAIST</a>
+
+            <button class="navbar-toggler d-lg-none border-0 ms-auto"
+                    type="button"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#mainNav"
+                    style="color:#aaa">
+                <span>☰</span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="mainNav">
+                @if (User.Identity?.IsAuthenticated == true)
+                {
+                    <ul class="navbar-nav me-auto">
+
+                        <!-- Tee Times -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                               data-bs-toggle="dropdown">Tee Times</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="/TeeSheet/ViewSheet?date=@DateTime.Today.ToString("yyyy-MM-dd")">
+                                        Today's Tee Sheet
+                                    </a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <a class="dropdown-item" href="/StandingRequest/Create">
+                                        Make Standing Request
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item"
+                                       href="/StandingRequest/MyRequests?memberNumber=@User.FindFirst("MemberNumber")?.Value">
+                                        My Standing Requests
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Scores -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                               data-bs-toggle="dropdown">Scores</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="/Score/Enter">Enter a Score</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/Score/History">Score History</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/Handicap/Index">Handicap Index</a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        <!-- Membership -->
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                               data-bs-toggle="dropdown">Membership</a>
+                            <ul class="dropdown-menu">
+                                <li>
+                                    <a class="dropdown-item" href="/Application/Apply">
+                                        Apply for Membership
+                                    </a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/Application/Status">
+                                        Check Application Status
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
+                        @* ADMIN / CLERK ONLY *@
+                        @if (User.IsInRole("Admin") || User.IsInRole("Clerk"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle admin-link" href="#"
+                                   data-bs-toggle="dropdown">Admin</a>
+                                <ul class="dropdown-menu">
+                                    <li>
+                                        <span class="nav-section-label">Tee Sheet</span>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/Clerk/CreateTeeSheet">
+                                            Create Tee Sheet
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/Clerk/ManageStandingRequests">
+                                            Manage Standing Requests
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <span class="nav-section-label">Membership</span>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/Application/Review">
+                                            Review Applications
+                                        </a>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/Clerk/Members">
+                                            All Members
+                                        </a>
+                                    </li>
+                                    <li><hr class="dropdown-divider" /></li>
+                                    <li>
+                                        <span class="nav-section-label">Finance</span>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" href="/Finance/Accounts">
+                                            Member Accounts
+                                        </a>
+                                    </li>
+                                </ul>
+                            </li>
+                        }
+
+                    </ul>
+
+                    <!-- Right side — user menu -->
+                    <ul class="navbar-nav ms-auto">
+                        <li class="nav-item dropdown">
+                            <a class="nav-link dropdown-toggle" href="#"
+                               data-bs-toggle="dropdown">
+                                @User.Identity.Name
+                                <span class="user-badge">
+                                    @User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value
+                                </span>
+                            </a>
+                            <ul class="dropdown-menu dropdown-menu-end">
+                                <li>
+                                    <a class="dropdown-item" href="/Member/Profile">My Profile</a>
+                                </li>
+                                <li>
+                                    <a class="dropdown-item" href="/Finance/MyAccount">My Account</a>
+                                </li>
+                                <li><hr class="dropdown-divider" /></li>
+                                <li>
+                                    <a class="dropdown-item" style="color:#e07070"
+                                       href="/Account/Logout">Logout</a>
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+                }
+                else
+                {
+                    <ul class="navbar-nav me-auto">
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Application/Apply">Apply for Membership</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="/Application/Status">Application Status</a>
+                        </li>
+                    </ul>
+                    <ul class="navbar-nav ms-auto align-items-center">
+                        <li class="nav-item">
+                            <a class="nav-link nav-login-btn" href="/Account/Login">Login</a>
+                        </li>
+                    </ul>
+                }
+            </div>
+        </div>
+    </nav>
+
+    <!-- GLOBAL ALERTS -->
+    <div class="container">
+        @if (TempData["Success"] != null)
+        {
+            <div class="alert alert-success alert-dismissible fade show mt-3">
+                @TempData["Success"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+        @if (TempData["Error"] != null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show mt-3">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="container main-content">
+        @RenderBody()
+    </div>
+
+    /* ---- PAGE HEADERS ---- */
+    .page-header {
+    padding: 2.5rem 0 1.5rem;
+    margin-bottom: 2rem;
+    border-bottom: 1px solid #e0ddd6;
+    }
+
+    .page-header h2 {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 2.2rem;
+    font-weight: 300;
+    color: #0D0D0D;
+    margin-bottom: 0.2rem;
+    letter-spacing: -0.5px;
+    }
+
+    .page-header .page-subtitle {
+    font-size: 0.75rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #999;
+    }
+
+    /* ---- PANELS ---- */
+    .panel {
+    background: #fff;
+    border: 1px solid #e0ddd6;
+    border-top: 3px solid #C9A84C;
+    padding: 2rem;
+    margin-bottom: 1.5rem;
+    }
+
+    .panel-title {
+    font-family: 'Cormorant Garamond', serif;
+    font-size: 1.1rem;
+    font-weight: 600;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #0D0D0D;
+    margin-bottom: 1.5rem;
+    padding-bottom: 0.8rem;
+    border-bottom: 1px solid #f0ece4;
+    }
+
+    /* ---- FORMS ---- */
+    .form-label {
+    font-size: 0.72rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    color: #777;
+    font-weight: 400;
+    margin-bottom: 0.4rem;
+    }
+
+    .form-control, .form-select {
+    border: 1px solid #ddd;
+    border-radius: 1px;
+    font-size: 0.9rem;
+    color: #1A1A1A;
+    padding: 0.6rem 0.9rem;
+    background-color: #fefefe;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .form-control:focus, .form-select:focus {
+    border-color: #C9A84C;
+    box-shadow: 0 0 0 3px rgba(201,168,76,0.12);
+    outline: none;
+    }
+
+    .form-text { font-size: 0.75rem; color: #aaa; }
+
+    /* ---- BADGES ---- */
+    .badge {
+    font-weight: 400;
+    letter-spacing: 1px;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    border-radius: 2px;
+    padding: 4px 10px;
+    }
+
+    .badge-gold {
+    background-color: #C9A84C;
+    color: #0D0D0D;
+    }
+
+    .badge-pending { background-color: #888; }
+    .badge-accepted { background-color: #2d6a2d; }
+    .badge-denied { background-color: #8b2020; }
+    .badge-onhold { background-color: #8a6d00; color: #fff; }
+    .badge-waitlisted { background-color: #1a5276; }
+
+    /* ---- TABLES ---- */
+    .baist-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+    }
+
+    .baist-table th {
+    font-size: 0.68rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #888;
+    font-weight: 500;
+    padding: 0.8rem 1rem;
+    border-bottom: 2px solid #e0ddd6;
+    background-color: #faf9f6;
+    text-align: left;
+    }
+
+    .baist-table td {
+    padding: 0.9rem 1rem;
+    border-bottom: 1px solid #f0ece4;
+    color: #333;
+    vertical-align: middle;
+    }
+
+    .baist-table tr:hover td { background-color: #faf9f6; }
+
+    .baist-table tr:last-child td { border-bottom: none; }
+
+    /* ---- ACTION BUTTONS ---- */
+    .btn-action {
+    font-size: 0.7rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 5px 14px;
+    border-radius: 1px;
+    text-decoration: none;
+    display: inline-block;
+    transition: all 0.15s;
+    }
+
+    .btn-action-dark {
+    background-color: #0D0D0D;
+    color: #fff;
+    border: 1px solid #0D0D0D;
+    }
+
+    .btn-action-dark:hover {
+    background-color: #2A2A2A;
+    color: #fff;
+    }
+
+    .btn-action-gold {
+    background-color: #C9A84C;
+    color: #0D0D0D;
+    border: 1px solid #C9A84C;
+    }
+
+    .btn-action-gold:hover {
+    background-color: #E8D5A3;
+    color: #0D0D0D;
+    }
+
+    .btn-action-outline {
+    background-color: transparent;
+    color: #555;
+    border: 1px solid #ddd;
+    }
+
+    .btn-action-outline:hover {
+    border-color: #555;
+    color: #0D0D0D;
+    }
+
+    .btn-action-danger {
+    background-color: transparent;
+    color: #c0392b;
+    border: 1px solid #e0b0aa;
+    }
+
+    .btn-action-danger:hover {
+    background-color: #c0392b;
+    color: #fff;
+    border-color: #c0392b;
+    }
+
+    /* ---- STATUS PILLS ---- */
+    .status-pill {
+    display: inline-block;
+    font-size: 0.65rem;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    padding: 3px 10px;
+    border-radius: 20px;
+    }
+
+    .status-available { background: #e8f5e9; color: #2d6a2d; }
+    .status-booked { background: #fff8e1; color: #8a6d00; }
+    .status-blocked { background: #f5f5f5; color: #888; }
+    .status-cancelled { background: #fdecea; color: #c0392b; }
+    .status-active { background: #e8f5e9; color: #2d6a2d; }
+
+    /* ---- ALERTS ---- */
+    .alert {
+    border-radius: 1px;
+    font-size: 0.85rem;
+    border-left: 3px solid;
+    padding: 0.9rem 1.2rem;
+    }
+
+    .alert-success { border-left-color: #2d6a2d; }
+    .alert-danger { border-left-color: #c0392b; }
+    .alert-warning { border-left-color: #C9A84C; background-color: #fffdf0; }
+    .alert-info { border-left-color: #1a5276; background-color: #f0f6ff; }
+
+    /* ---- DATE NAV ---- */
+    .date-nav {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+    }
+
+    .date-nav-btn {
+    background: #fff;
+    border: 1px solid #e0ddd6;
+    color: #555;
+    padding: 6px 16px;
+    font-size: 0.75rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    text-decoration: none;
+    transition: all 0.15s;
+    border-radius: 1px;
+    }
+
+    .date-nav-btn:hover {
+    border-color: #C9A84C;
+    color: #0D0D0D;
+    }
+
+    .date-nav-btn.active {
+    background-color: #0D0D0D;
+    color: #fff;
+    border-color: #0D0D0D;
+    }
+
+    /* ---- SECTION DIVIDER ---- */
+    .section-divider {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 2rem 0 1.5rem;
+    }
+
+    .section-divider-label {
+    font-size: 0.68rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #C9A84C;
+    white-space: nowrap;
+    }
+
+    .section-divider-line {
+    flex: 1;
+    height: 1px;
+    background: #e0ddd6;
+    }
+
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+        <div class="container">
+            <span>Club BAIST</span> — Private Golf Club — Est. 1996 — Alberta, Canada
+        </div>
+    </footer>
+
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+
+
+
+</body>
+</html>

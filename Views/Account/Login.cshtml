@@ -1,0 +1,237 @@
+﻿@model ClubBAIST.Models.ViewModels.LoginViewModel
+
+@{
+    ViewData["Title"] = "Login";
+    Layout = null;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login — Club BAIST</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,600;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Jost', sans-serif;
+            font-weight: 300;
+            background-color: #0D0D0D;
+            color: #F5F2EC;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+            body::before {
+                content: '';
+                position: fixed;
+                inset: 0;
+                background-image: linear-gradient(rgba(201,168,76,0.03) 1px, transparent 1px), linear-gradient(90deg, rgba(201,168,76,0.03) 1px, transparent 1px);
+                background-size: 60px 60px;
+                pointer-events: none;
+            }
+
+        .login-wrap {
+            width: 100%;
+            max-width: 400px;
+            padding: 2rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .login-brand {
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .login-brand-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.2rem;
+            font-weight: 300;
+            color: #C9A84C;
+            letter-spacing: 6px;
+            text-transform: uppercase;
+            display: block;
+        }
+
+        .login-brand-sub {
+            font-size: 0.65rem;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            color: #555;
+            margin-top: 0.4rem;
+            display: block;
+        }
+
+        .login-card {
+            background-color: #1A1A1A;
+            border: 1px solid #2A2A2A;
+            border-top: 2px solid #C9A84C;
+            padding: 2.5rem;
+        }
+
+            .login-card h3 {
+                font-size: 0.7rem;
+                letter-spacing: 3px;
+                text-transform: uppercase;
+                color: #666;
+                margin-bottom: 2rem;
+            }
+
+        .form-label {
+            font-size: 0.68rem;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            color: #666;
+            display: block;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-control {
+            width: 100%;
+            background-color: #111;
+            border: 1px solid #333;
+            color: #F5F2EC;
+            padding: 0.75rem 1rem;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.9rem;
+            font-weight: 300;
+            border-radius: 1px;
+            transition: border-color 0.2s;
+            outline: none;
+        }
+
+            .form-control:focus {
+                border-color: #C9A84C;
+            }
+
+            .form-control::placeholder {
+                color: #444;
+            }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .remember-row {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 2rem;
+        }
+
+            .remember-row input[type=checkbox] {
+                width: 15px;
+                height: 15px;
+                accent-color: #C9A84C;
+            }
+
+            .remember-row label {
+                font-size: 0.72rem;
+                letter-spacing: 1px;
+                color: #555;
+            }
+
+        .btn-login {
+            width: 100%;
+            background-color: #C9A84C;
+            color: #0D0D0D;
+            border: none;
+            padding: 14px;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            cursor: pointer;
+            transition: background-color 0.2s;
+        }
+
+            .btn-login:hover {
+                background-color: #E8D5A3;
+            }
+
+        .login-links {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1.5rem;
+        }
+
+            .login-links a {
+                font-size: 0.7rem;
+                letter-spacing: 1px;
+                color: #555;
+                text-decoration: none;
+                text-transform: uppercase;
+                transition: color 0.2s;
+            }
+
+                .login-links a:hover {
+                    color: #C9A84C;
+                }
+
+        .error-msg {
+            background-color: rgba(192,57,43,0.15);
+            border-left: 3px solid #c0392b;
+            color: #e07070;
+            padding: 0.8rem 1rem;
+            font-size: 0.82rem;
+            margin-bottom: 1.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="login-wrap">
+        <div class="login-brand">
+            <span class="login-brand-name">Club BAIST</span>
+            <span class="login-brand-sub">Private Golf Club — Est. 1996</span>
+        </div>
+
+        <div class="login-card">
+            <h3>Member Login</h3>
+
+            @if (Model.ErrorMessage != null)
+            {
+                <div class="error-msg">@Model.ErrorMessage</div>
+            }
+
+            <form method="post" action="/Account/Login">
+                @Html.AntiForgeryToken()
+
+                <div class="form-group">
+                    <label class="form-label">Member Number</label>
+                    <input type="text" name="MemberNumber" class="form-control"
+                           placeholder="e.g. M001" value="@Model.MemberNumber" />
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input type="password" name="Password" class="form-control"
+                           placeholder="••••••••" />
+                </div>
+
+                <div class="remember-row">
+                    <input type="checkbox" name="RememberMe" id="RememberMe" value="true" />
+                    <label for="RememberMe">Remember me</label>
+                </div>
+
+                <button type="submit" class="btn-login">Sign In</button>
+            </form>
+
+            <div class="login-links">
+                <a href="/Application/Apply">Apply for Membership</a>
+                <a href="/Application/Status">Check Application Status</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

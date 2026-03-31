@@ -1,0 +1,64 @@
+﻿@model List<ClubBAIST.Models.Domain.MembershipApplication>
+
+@{
+    ViewData["Title"] = "Review Applications";
+}
+
+<div class="page-header">
+    <h2>Membership Applications</h2>
+    <p class="page-subtitle">Committee Review Panel</p>
+</div>
+
+@if (!Model.Any())
+{
+    <div class="panel" style="text-align:center;padding:3rem;color:#999">
+        No applications on file.
+    </div>
+}
+else
+{
+    <div class="panel" style="padding:0">
+        <table class="baist-table">
+            <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Applicant</th>
+                    <th>Desired Type</th>
+                    <th>Sponsor 1</th>
+                    <th>Sponsor 2</th>
+                    <th>Submitted</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                @foreach (var app in Model)
+                {
+                    var pillClass = app.Status switch
+                    {
+                        "Accepted" => "status-active",
+                        "Denied" => "status-cancelled",
+                        "OnHold" => "status-booked",
+                        "Waitlisted" => "status-blocked",
+                        _ => "status-blocked"
+                    };
+                    <tr>
+                        <td style="color:#bbb">@app.ApplicationId</td>
+                        <td><strong>@app.FirstName @app.LastName</strong></td>
+                        <td>@app.DesiredType?.TypeName</td>
+                        <td style="color:#777">@app.Sponsor1?.FullName</td>
+                        <td style="color:#777">@app.Sponsor2?.FullName</td>
+                        <td style="color:#999">@app.SubmittedDate.ToString("MMM dd, yyyy")</td>
+                        <td>
+                            <span class="status-pill @pillClass">@app.Status</span>
+                        </td>
+                        <td>
+                            <a href="/Application/ReviewDetail?id=@app.ApplicationId"
+                               class="btn-action btn-action-outline">Review</a>
+                        </td>
+                    </tr>
+                }
+            </tbody>
+        </table>
+    </div>
+}

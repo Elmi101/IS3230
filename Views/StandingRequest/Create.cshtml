@@ -1,0 +1,88 @@
+﻿@model ClubBAIST.Models.ViewModels.StandingRequestViewModel
+
+@{
+    ViewData["Title"] = "Standing Tee Time Request";
+}
+
+<div class="page-header">
+    <h2>Standing Tee Time Request</h2>
+    <p class="page-subtitle">Shareholder Members Only — Foursome Required</p>
+</div>
+
+@if (Model.ErrorMessage != null)
+{
+    <div class="alert alert-danger mb-3">@Model.ErrorMessage</div>
+}
+
+<form method="post" action="/StandingRequest/Create">
+    @Html.AntiForgeryToken()
+
+    <div class="panel">
+        <div class="panel-title">Foursome Members</div>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Shareholder Member #</label>
+                <input type="text" name="ShareholderMemberNumber"
+                       class="form-control" placeholder="e.g. M001"
+                       value="@Model.ShareholderMemberNumber" />
+                <div class="form-text">Must be listed first</div>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Member 2</label>
+                <input type="text" name="Member2Number" class="form-control"
+                       placeholder="Member Number" value="@Model.Member2Number" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Member 3</label>
+                <input type="text" name="Member3Number" class="form-control"
+                       placeholder="Member Number" value="@Model.Member3Number" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Member 4</label>
+                <input type="text" name="Member4Number" class="form-control"
+                       placeholder="Member Number" value="@Model.Member4Number" />
+            </div>
+        </div>
+    </div>
+
+    <div class="panel">
+        <div class="panel-title">Schedule</div>
+        <div class="row">
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Day of Week</label>
+                <select name="RequestedDayOfWeek" class="form-select">
+                    <option value="0">Sunday</option>
+                    <option value="1">Monday</option>
+                    <option value="2">Tuesday</option>
+                    <option value="3">Wednesday</option>
+                    <option value="4">Thursday</option>
+                    <option value="5">Friday</option>
+                    <option value="6">Saturday</option>
+                </select>
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Requested Time <span style="color:#999">(± 30 min)</span></label>
+                <input type="time" name="RequestedTime" class="form-control" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Start Date</label>
+                <input type="date" name="RequestedStartDate" class="form-control"
+                       value="@Model.RequestedStartDate.ToString("yyyy-MM-dd")" />
+            </div>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">End Date <span style="color:#999">(optional)</span></label>
+                <input type="date" name="RequestedEndDate" class="form-control"
+                       value="@Model.RequestedEndDate?.ToString("yyyy-MM-dd")" />
+            </div>
+        </div>
+    </div>
+
+    <div style="display:flex;gap:0.75rem">
+        <button type="submit" class="btn-action btn-action-dark" style="padding:10px 32px">
+            Submit Request
+        </button>
+        <a href="/Home/Index" class="btn-action btn-action-outline" style="padding:10px 32px">
+            Cancel
+        </a>
+    </div>
+</form>
